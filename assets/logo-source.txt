@@ -1,1 +1,0 @@
-Use assets/vibesync-logo.png in index.html. Transparent PNG, no background.
