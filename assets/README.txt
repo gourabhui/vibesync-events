@@ -1,0 +1,1 @@
+Transparent logo asset is stored as assets/vibesync-logo.png
