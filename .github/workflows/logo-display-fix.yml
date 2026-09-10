@@ -11,19 +11,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Apply final logo and cursor styling
+      - name: Use transparent cropped VibeSync PNG
         run: |
           python - <<'PY'
           from pathlib import Path
-          p = Path('index.html')
-          s = p.read_text()
-          # Remove conflicting mobile/duplicate logo rule from the earlier CSS fix.
-          s = s.replace('.logo img{position:absolute;left:50%;top:50%;width:330px;height:330px;max-width:none;transform:translate(-50%,-50%)}.logo img{display:block;width:100%;height:auto}', '.logo img{position:absolute;left:50%;top:50%;width:330px;height:330px;max-width:none;transform:translate(-50%,-50%);mix-blend-mode:screen;display:block}')
-          s = s.replace('.cursor{position:fixed;z-index:9999;width:18px;height:18px;border:2px solid var(--o);', '.cursor{position:fixed;z-index:9999;width:24px;height:24px;border:2px solid var(--o);')
-          s = s.replace('.cursor.big{width:58px;height:58px;', '.cursor.big{width:72px;height:72px;')
-          # Make the desktop logo clearly larger while preserving the crop container.
-          s = s.replace('.logo{width:260px;height:76px;', '.logo{width:285px;height:80px;')
-          s = s.replace('.logo img{width:245px;height:245px}', '.logo img{width:255px;height:255px}')
+          p=Path('index.html')
+          s=p.read_text()
+          s=s.replace('https://raw.githubusercontent.com/gourabhui/vibesync-events-portfolio/main/images/670855447_17930190945276288_6552016598343555044_n.jpg','./assets/vibesync-logo.png')
+          s=s.replace('.logo{width:285px;height:80px;display:block;position:relative;overflow:hidden}.logo img{position:absolute;left:50%;top:50%;width:330px;height:330px;max-width:none;transform:translate(-50%,-50%);mix-blend-mode:screen;display:block}', '.logo{width:190px;height:60px;display:flex;align-items:center;overflow:hidden}.logo img{display:block;width:100%;height:auto;object-fit:contain;object-position:center}')
+          s=s.replace('.logo{width:260px;height:76px;display:block;position:relative;overflow:hidden}.logo img{position:absolute;left:50%;top:50%;width:330px;height:330px;max-width:none;transform:translate(-50%,-50%)}.logo img{display:block;width:100%;height:auto}', '.logo{width:190px;height:60px;display:flex;align-items:center;overflow:hidden}.logo img{display:block;width:100%;height:auto;object-fit:contain;object-position:center}')
+          s=s.replace('.cursor{position:fixed;z-index:9999;width:24px;height:24px;', '.cursor{position:fixed;z-index:9999;width:24px;height:24px;')
+          s=s.replace('.cursor.big{width:72px;height:72px;', '.cursor.big{width:72px;height:72px;')
           p.write_text(s)
           PY
       - name: Commit logo fix
@@ -31,4 +29,4 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add index.html
-          git diff --cached --quiet || (git commit -m 'Finalize VibeSync logo and orange cursor [skip ci]' && git push)
+          git diff --cached --quiet || (git commit -m 'Use transparent VibeSync PNG without black background [skip ci]' && git push)
